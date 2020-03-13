@@ -4,9 +4,6 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.squareup.moshi.Json
 
-/**
- *  Added constructor for data binding to access items
- */
 
 data class Weather(
     @Json(name = "description") val description: String,

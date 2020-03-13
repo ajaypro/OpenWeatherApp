@@ -5,8 +5,6 @@ import com.deepak.openweather.data.WeatherProperty
 import kotlinx.coroutines.Deferred
 import retrofit2.http.GET
 import retrofit2.http.Query
-import javax.inject.Singleton
-
 
 interface WeatherApi {
 
@@ -14,5 +12,5 @@ interface WeatherApi {
       fun getWeatherAsync(
         @Query("lat")lat: Double,
         @Query("lon")lon:Double,
-        @Query(Networking.APPID) apiKey: String = Networking.API_KEY): Deferred<WeatherProperty>
+        @Query("APPID") apiKey: String = BuildConfig.API_KEY): Deferred<WeatherProperty>
 }

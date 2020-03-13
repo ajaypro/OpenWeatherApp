@@ -10,14 +10,13 @@ import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
-import javax.inject.Inject
 
 /**
  * To get current location of device using fusedlocation provider
  *
  */
 
-class LocationRepository @Inject constructor(context: Context) {
+class LocationRepository(context: Context) {
 
     private val TAG = "LocationRepository"
 

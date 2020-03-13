@@ -27,40 +27,26 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import java.util.concurrent.TimeUnit
+
+private const val BASE_URL = "https://api.openweathermap.org/data/2.5/"
+
+private val retrofit = Retrofit.Builder()
+    .baseUrl(BASE_URL)
+    .addConverterFactory(MoshiConverterFactory.create(Moshi.Builder()
+        .add(KotlinJsonAdapterFactory())
+        .build()))
+    .addCallAdapterFactory(CoroutineCallAdapterFactory())
+    .client(OkHttpClient.Builder()
+        .addInterceptor(HttpLoggingInterceptor().apply {
+            level = if(BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY
+            else HttpLoggingInterceptor.Level.NONE
+        })
+        .build())
+    .build()
 
 
 object Networking {
-
-    const val APPID = "APPID"
-
-    private const val NETWORK_CALL_TIMEOUT = 60
-    internal lateinit var API_KEY: String
-
-    fun create(apiKey: String, baseUrl: String): WeatherApi {
-        API_KEY = apiKey
-        return Retrofit.Builder()
-            .baseUrl(baseUrl)
-            .client(
-                OkHttpClient.Builder()
-                    .addInterceptor(HttpLoggingInterceptor().apply {
-                        level = if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY
-                        else HttpLoggingInterceptor.Level.NONE
-                    })
-                    .readTimeout(NETWORK_CALL_TIMEOUT.toLong(), TimeUnit.SECONDS)
-                    .writeTimeout(NETWORK_CALL_TIMEOUT.toLong(), TimeUnit.SECONDS)
-                    .build()
-            )
-            .addConverterFactory(
-                MoshiConverterFactory.create(
-                    Moshi.Builder()
-                        .add(KotlinJsonAdapterFactory())
-                        .build())
-            )
-            .addCallAdapterFactory(CoroutineCallAdapterFactory())
-            .build()
-            .create(WeatherApi::class.java)
-
-
+    val retrofitService: WeatherApi by lazy {
+        retrofit.create(WeatherApi::class.java)
     }
 }

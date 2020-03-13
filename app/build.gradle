@@ -24,10 +24,10 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
-
-        debug {
+        debug{
             buildConfigField("String", "BASE_URL", "\"https://api.openweathermap.org/data/2.5/\"")
             buildConfigField("String", "API_KEY", "\"5ad7218f2e11df834b0eaf3a33a39d2a\"")
+
         }
         release {
             minifyEnabled false
@@ -42,10 +42,6 @@ android {
     }
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
-    }
-
-    testOptions.unitTests {
-        includeAndroidResources = true
     }
 }
 
@@ -98,26 +94,7 @@ dependencies {
     def work_version = "2.3.2"
     implementation "androidx.work:work-runtime-ktx:$work_version"
 
-
-    // Dependency injection
-    implementation 'com.google.dagger:dagger:2.21'
-    kapt  'com.google.dagger:dagger-compiler:2.21'
-
-    // Dependencies for local unit tests
-    testImplementation "junit:junit:$junitVersion"
-
-    // AndroidX Test - Instrumented testing
-    androidTestImplementation "androidx.test.ext:junit:$androidXTestExtKotlinRunnerVersion"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-
-
-    androidTestImplementation "androidx.test:core-ktx:$androidXTestCoreVersion"
-    androidTestImplementation "androidx.test.ext:junit-ktx:1.1.2-alpha04"
-
-    testImplementation "org.hamcrest:hamcrest-all:$hamcrestVersion"
-    testImplementation "androidx.test.ext:junit-ktx:$androidXTestExtKotlinRunnerVersion"
-    testImplementation "androidx.test:core-ktx:$androidXTestCoreVersion"
-    testImplementation "org.robolectric:robolectric:$robolectricVersion"
-    testImplementation "androidx.arch.core:core-testing:$archTestingVersion"
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 }

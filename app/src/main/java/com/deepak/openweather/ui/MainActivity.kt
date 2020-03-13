@@ -13,42 +13,34 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
 import com.deepak.openweather.BuildConfig
 import com.deepak.openweather.R
-import com.deepak.openweather.WeatherApplication
+import com.deepak.openweather.data.WeatherRepository
+import com.deepak.openweather.data.local.dataBase
 import com.deepak.openweather.databinding.ActivityMainBinding
-import com.deepak.openweather.di.component.ActivityComponent
-import com.deepak.openweather.di.component.DaggerActivityComponent
-import com.deepak.openweather.di.modules.ActivityModule
 import com.deepak.openweather.isConnected
 import com.google.android.material.snackbar.Snackbar
-import javax.inject.Inject
 
 
 class MainActivity : AppCompatActivity() {
 
-    companion object {
-        private const val PERMISSION_ID = 42
-        private const val TAG = "MainActivity"
-    }
-
-    @Inject
-    lateinit var viewModel: WeatherViewModel
-
+    private val PERMISSION_ID = 42
+    private val TAG = "MainActivity"
+    lateinit var weatherRepository: WeatherRepository
     lateinit var binding: ActivityMainBinding
 
 
-    /*private val viewModel: WeatherViewModel by lazy {
+    private val viewModel: WeatherViewModel by lazy {
         val activity = requireNotNull(this)
         ViewModelProvider(this, Factory(weatherRepository, activity.application))
             .get(WeatherViewModel::class.java)
-    }*/
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        injectDependencies(buildActivityComponent())
         super.onCreate(savedInstanceState)
 
-       // weatherRepository = WeatherRepository(dataBase(this))
+        weatherRepository = WeatherRepository(dataBase(this), this)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
         if (isConnected) {
@@ -63,16 +55,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun injectDependencies(activityComponent: ActivityComponent){
-         activityComponent.inject(this)
-    }
-
-     private fun buildActivityComponent() = DaggerActivityComponent
-             .builder()
-              .activityModule(ActivityModule(this))
-             .appComponent((application as WeatherApplication).applicationComponent)
-             .build()
-
     private fun isLocationEnabled(): Boolean {
         val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
@@ -81,7 +63,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun checkPermissions(): Boolean {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
-            == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+            == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            )
             == PackageManager.PERMISSION_GRANTED
         ) {
             return true
@@ -91,8 +76,14 @@ class MainActivity : AppCompatActivity() {
 
     private fun requestPermission() {
 
-        val shouldProvideRationale = (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                && ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_COARSE_LOCATION))
+        val shouldProvideRationale = (ActivityCompat.shouldShowRequestPermissionRationale(
+            this,
+            Manifest.permission.ACCESS_FINE_LOCATION
+        ) &&
+                ActivityCompat.shouldShowRequestPermissionRationale(
+                    this,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                ))
 
         if (shouldProvideRationale) {
             Log.i(TAG, "Displaying permission rationale to provide additional context.")
@@ -152,7 +143,5 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
-
 }
 

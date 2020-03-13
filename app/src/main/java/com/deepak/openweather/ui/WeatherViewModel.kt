@@ -13,7 +13,7 @@ import com.deepak.openweather.work.RefreshDataWorker
 import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 
-class WeatherViewModel (private val weatherRepository: WeatherRepository, application: Application) :
+class WeatherViewModel(private val weatherRepository: WeatherRepository, application: Application) :
     AndroidViewModel(application) {
 
     private val TAG = "WeatherViewModel"
@@ -22,12 +22,11 @@ class WeatherViewModel (private val weatherRepository: WeatherRepository, applic
 
     init {
 
-        locationRepository.currentLocaton.observeForever {
+        locationRepository.currentLocaton.observeForever{
             it?.let {
                 refreshDataFromRepository(it)
             }
         }
-        Log.d(TAG, "location is empty")
 
     }
 
@@ -40,7 +39,7 @@ class WeatherViewModel (private val weatherRepository: WeatherRepository, applic
         }
     }
 
-    private fun setUpRecurringWork(location: Location) {
+    private fun setUpRecurringWork(location: Location){
 
         val constraints = Constraints.Builder()
             .setRequiredNetworkType(NetworkType.UNMETERED)
@@ -57,13 +56,12 @@ class WeatherViewModel (private val weatherRepository: WeatherRepository, applic
             .setInputData(data)
             .build()
 
-        Log.d(TAG, "Periodic Work request for sync is scheduled")
+        Log.d(TAG,"Periodic Work request for sync is scheduled")
         WorkManager.getInstance(getApplication())
             .enqueueUniquePeriodicWork(
                 RefreshDataWorker.WORK_NAME,
                 ExistingPeriodicWorkPolicy.KEEP,
-                recurringRequest
-            )
+                recurringRequest)
     }
 
 

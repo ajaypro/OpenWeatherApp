@@ -17,9 +17,9 @@ abstract class WeatherDatabase : RoomDatabase() {
     abstract val weatherDao: WeatherDao
 }
 
-//private lateinit var instance: WeatherDatabase
+private lateinit var instance: WeatherDatabase
 
-/*fun dataBase(context: Context): WeatherDatabase {
+fun dataBase(context: Context): WeatherDatabase {
 
     synchronized(WeatherDatabase::class.java) {
 
@@ -30,11 +30,11 @@ abstract class WeatherDatabase : RoomDatabase() {
         }
     }
     return instance
-}*/
+}
 
-     /*val MIGRATION_1_2 = object : Migration(1,2) {
+     val MIGRATION_1_2 = object : Migration(1,2) {
 
          override fun migrate(database: SupportSQLiteDatabase) {
              database.execSQL("ALTER TABLE 'weatherproperty' ADD COLUMN 'wind' TEXT ")
          }
-     }*/
+     }
