@@ -1,0 +1,123 @@
+apply plugin: 'com.android.application'
+
+apply plugin: 'kotlin-android'
+
+apply plugin: 'kotlin-android-extensions'
+
+apply plugin: 'kotlin-kapt'
+
+apply plugin: "androidx.navigation.safeargs.kotlin"
+
+
+android {
+    compileSdkVersion 29
+    buildToolsVersion "29.0.2"
+    dataBinding {
+        enabled = true
+    }
+    defaultConfig {
+        applicationId "com.deepak.openweather"
+        minSdkVersion 21
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+
+        debug {
+            buildConfigField("String", "BASE_URL", "\"https://api.openweathermap.org/data/2.5/\"")
+            buildConfigField("String", "API_KEY", "\"5ad7218f2e11df834b0eaf3a33a39d2a\"")
+        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField("String", "BASE_URL", "\"https://api.openweathermap.org/data/2.5/\"")
+            buildConfigField("String", "API_KEY", "\"5ad7218f2e11df834b0eaf3a33a39d2a\"")
+        }
+    }
+    compileOptions {
+        targetCompatibility = 1.8
+        sourceCompatibility = 1.8
+    }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
+
+    testOptions.unitTests {
+        includeAndroidResources = true
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.core:core-ktx:1.2.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+
+    // Retrofit with Moshi Converter
+    implementation "com.squareup.retrofit2:retrofit:2.6.1"
+    implementation "com.squareup.retrofit2:converter-moshi:2.6.1"
+    implementation("com.squareup.okhttp3:logging-interceptor:4.4.0")
+
+    // Moshi
+    implementation "com.squareup.moshi:moshi:1.8.0"
+    implementation "com.squareup.moshi:moshi-kotlin:1.8.0"
+
+    //Gson
+    implementation 'com.google.code.gson:gson:2.8.5'
+
+    // Coroutines
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.0"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.0"
+
+    // Retrofit Coroutines Support
+    implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2"
+
+    //lifecycle
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
+
+    def nav_version = "2.2.1"
+    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+
+    // Room dependency
+    def room_version = "2.1.0-alpha06"
+    implementation "androidx.room:room-runtime:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
+
+    //location
+    implementation 'com.google.android.gms:play-services-location:17.0.0'
+
+    // Glide
+    implementation "com.github.bumptech.glide:glide:4.8.0"
+
+    // WorkManager dependency
+    def work_version = "2.3.2"
+    implementation "androidx.work:work-runtime-ktx:$work_version"
+
+
+    // Dependency injection
+    implementation 'com.google.dagger:dagger:2.21'
+    kapt  'com.google.dagger:dagger-compiler:2.21'
+
+    // Dependencies for local unit tests
+    testImplementation "junit:junit:$junitVersion"
+
+    // AndroidX Test - Instrumented testing
+    androidTestImplementation "androidx.test.ext:junit:$androidXTestExtKotlinRunnerVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+
+
+    androidTestImplementation "androidx.test:core-ktx:$androidXTestCoreVersion"
+    androidTestImplementation "androidx.test.ext:junit-ktx:1.1.2-alpha04"
+
+    testImplementation "org.hamcrest:hamcrest-all:$hamcrestVersion"
+    testImplementation "androidx.test.ext:junit-ktx:$androidXTestExtKotlinRunnerVersion"
+    testImplementation "androidx.test:core-ktx:$androidXTestCoreVersion"
+    testImplementation "org.robolectric:robolectric:$robolectricVersion"
+    testImplementation "androidx.arch.core:core-testing:$archTestingVersion"
+}

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+         <variable
+             name="weatherViewModel"
+             type="com.deepak.openweather.ui.WeatherViewModel" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.MainActivity">
+
+        <ImageView
+            android:id="@+id/todaysImage"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            app:iconCode="@{weatherViewModel.currentDayWeather.weather.get(0).icon}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:id="@+id/todaysTemperature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="30sp"
+            android:text="@{@string/addDegree((int)weatherViewModel.currentDayWeather.main.temperature)}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/todaysImage"
+            tools:text="32°" />
+
+        <TextView
+            android:id="@+id/todaysMinTemperature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toStartOf="@+id/todaysTemperature"
+            app:layout_constraintHorizontal_bias="0.85"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/todaysTemperature"
+            android:text="@{@string/addDegree((int)weatherViewModel.currentDayWeather.main.minTemperature)}"
+            tools:text="20°" />
+
+        <TextView
+            android:id="@+id/todaysMaxTemperature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.15"
+            app:layout_constraintStart_toEndOf="@+id/todaysTemperature"
+            app:layout_constraintTop_toBottomOf="@+id/todaysTemperature"
+            android:text="@{@string/addDegree((int)weatherViewModel.currentDayWeather.main.maxTemperature)}"
+            tools:text="40°" />
+
+        <TextView
+            android:id="@+id/todaysDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="@{weatherViewModel.currentDayWeather.weather.get(0).description}"
+            android:textAlignment="center"
+            android:textSize="25sp"
+            app:layout_constraintTop_toBottomOf="@+id/todaysMinTemperature"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="Light Showers" />
+
+        <TextView
+            android:id="@+id/windText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="40dp"
+            android:text="@string/wind"
+            android:textAlignment="textStart"
+            android:textSize="22sp"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/todaysDescription" />
+
+        <TextView
+            android:id="@+id/wind"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="28dp"
+            android:layout_marginTop="40dp"
+            android:text="@{String.valueOf(weatherViewModel.currentDayWeather.wind.speed)}"
+            android:textAlignment="textStart"
+            android:textSize="22sp"
+            app:layout_constraintStart_toEndOf="@+id/windText"
+            app:layout_constraintTop_toBottomOf="@+id/todaysDescription"
+            tools:text="1.4"/>
+
+        <TextView
+            android:id="@+id/place"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="44dp"
+            android:text="@{weatherViewModel.currentDayWeather.name}"
+            android:textAlignment="viewStart"
+            android:textSize="22sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.072"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/windText"
+            tools:text="Bangalore"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
